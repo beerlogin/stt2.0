@@ -48,9 +48,9 @@ def reset_timer():
 def config(action_value=None, is_listening_value=None):
     # Читаем текущие данные из файла
     if action_value != None:
-        config['action'] = action_value
+        CONFIG['action'] = action_value
     if is_listening_value != None:
-        config['is_listening'] = str(is_listening_value)
+        CONFIG['is_listening'] = str(is_listening_value)
     update_config(config)
 
 """
