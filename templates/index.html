@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосовой Ассистент Гена</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="/static/index.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .main_container {
+            margin: 0;
+            padding: 20px;
+            display: flex; /* Используем Flexbox */
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+            height: 60vh; /* Задаем высоту равной высоте окна */
+        }
+        
+        .container {
+            width: 60%;
+            background: white;
+            padding: 30px; /* Увеличиваем отступы для лучшего восприятия */
+            border-radius: 10px; /* Скругляем углы */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Увеличиваем тень для глубины */
+            text-align: center; /* Центрируем текст внутри контейнера */
+        }
+        
+        .avatar_container {
+            position: relative; /* Устанавливаем относительное позиционирование для контейнера */
+            width: 30vh; /* Увеличиваем ширину контейнера для лучшего отображения */
+            margin-top: -15vh; /* Отступ снизу для отделения от текста */
+            margin-bottom: 35vh; /* Отступ снизу для отделения от текста */
+            max-width: 50vh;
+            margin-left: auto; /* Центрируем контейнер по горизонтали */
+            margin-right: auto; /* Центрируем контейнер по горизонтали */
+        }
+        
+        img.avatar,
+        img.circle,
+        img.background {
+            border-radius: 50%;
+            width: 100%; /* Устанавливаем ширину на 100% для фона */
+            position: absolute; /* Делаем фон абсолютным */
+            top: 0; /* Выравниваем по верхнему краю контейнера */
+            left: 0; /* Выравниваем по левому краю контейнера */
+        }
+        
+        img.spin1 {
+            animation: spin 32s infinite linear;
+        }
+        
+        img.spin2 {
+            animation: spin 12s infinite linear;
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg); /* Начальная позиция */
+            }
+            to {
+                transform: rotate(360deg); /* Конечная позиция */
+            }
+        }
+
+        p {
+            font-size: 24px; /* Увеличиваем размер шрифта для статуса */
+            font-weight: bold; /* Делаем текст жирным */
+            color: #333; /* Темный цвет текста для контраста */
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 18px; /* Размер шрифта для статуса */
+            color: #666; /* Серый цвет текста для статуса */
+        }
+
+        .navbar {
+            background-color: #007bff; /* Цвет фона панели навигации */
+            color: white; /* Цвет текста */
+            padding: 15px 20px; /* Отступы */
+            display: flex; /* Используем Flexbox для выравнивания */
+            justify-content: space-between; /* Распределяем элементы по краям */
+            align-items: center; /* Центрируем по вертикали */
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Увеличиваем тень для глубины */
+
+        }
+
+        .navbar h1 {
+            margin: 0; /* Убираем отступы у заголовка */
+            font-size: 24px; /* Размер шрифта заголовка */
+        }
+
+        .navbar a {
+            color: white; /* Цвет ссылок */
+            text-decoration: none; /* Убираем подчеркивание */
+            margin-left: 20px; /* Отступ между ссылками */
+            transition: all 0.5s ease-in-out;
+        }
+        nav a {
+            position: relative;
+            color: #00a650; /* Цвет текста */
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0; /* Позиция подчеркивания */
+            width: 100%; /* Длина подчеркивания */
+            height: 2px; /* Толщина подчеркивания */
+            background-color: white; /* Цвет подчеркивания */
+            transform: scaleX(0); /* Начальное состояние - скрыто */
+            transition: transform 0.3s ease; /* Плавный переход */
+        }
+        
+        nav a:hover:after {
+            transform: scaleX(1); /* При наведении - показать подчеркивание */
+        }
+
+        div.logo {
+            display: flex;
+            align-items: center;
+        }
+        img.logo{
+            width: 8vh;
+        }
+        .logo h1 {
+            margin-left: 2vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="/static/gena.png" class="logo">
+            <h1>Гена</h1>
+        </div>
+        <nav>
+          <a href="#features">Команды</a>
+          <a href="#about">Настройки</a>
+        </nav>
+    </div>
+
+    <div class="main_container">
+        <div class="container">
+            <div class="avatar_container">
+                <img src="/static/gena.png" class="avatar" style="z-index: 3;">
+                <img src="/static/circle.png" class="circle spin2" style="z-index: 2;">
+                <img src="/static/background.png" class="background" style="z-index: 1;">
+            </div>
+    
+            <p>Статус</p>
+            <p id="status">Ожидание команды...</p>
+            <div id="status">
+              <!-- Здесь будет отображаться статус -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
